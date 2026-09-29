@@ -1,0 +1,2 @@
+import { ButtonLink } from "@/components/ui";
+export default function NotFound() { return <section className="grid min-h-[70vh] place-items-center bg-forest-950 px-4 text-center text-white"><div><p className="eyebrow">Erreur 404</p><h1 className="display-title mt-4 text-6xl">Cette page a pris le large.</h1><p className="mt-5 text-forest-200">Revenez à l’accueil pour poursuivre votre visite.</p><ButtonLink href="/" className="mt-8">Retour à l’accueil</ButtonLink></div></section>; }

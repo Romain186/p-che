@@ -1,0 +1,4 @@
+import { MapPin, Phone } from "lucide-react";
+import { ButtonLink } from "./ui";
+import { store } from "@/data/store";
+export function FinalCta() { return <section className="section-pad bg-ember"><div className="container-site flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.18em] text-white/75">Échangeons au magasin</p><h2 className="display-title mt-3 max-w-3xl text-4xl text-white md:text-5xl">Besoin d’un conseil pour votre prochaine sortie ?</h2><p className="mt-4 text-lg text-white/85">Passez directement au magasin et échangez avec des passionnés.</p></div><div className="flex flex-wrap gap-3"><ButtonLink href={store.mapsUrl} variant="light"><MapPin size={16}/> Voir l’itinéraire</ButtonLink><ButtonLink href={store.phoneHref} variant="secondary"><Phone size={16}/> {store.phone}</ButtonLink></div></div></section>; }

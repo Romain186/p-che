@@ -1,0 +1,39 @@
+import Image from "next/image";
+import { Compass, HeartHandshake, MapPinned, MessagesSquare, Shapes } from "lucide-react";
+import { ButtonLink, SectionHeading } from "@/components/ui";
+import { CategoryGrid } from "@/components/category-grid";
+import { NewsCard } from "@/components/news-card";
+import { FinalCta } from "@/components/cta";
+import { GoogleReviewsSection } from "@/components/google-reviews-section";
+import { HeroLocationMapCard } from "@/components/hero-location-map-card";
+import { news } from "@/data/news";
+import { brands } from "@/data/brands";
+
+const reasons = [
+  { title: "Conseils personnalisés", text: "Une équipe capable d’orienter chaque pêcheur selon sa pratique, son niveau et ses objectifs.", icon: MessagesSquare },
+  { title: "Matériel pour différentes techniques", text: "Carnassier, carpe, silure, pêche au coup et autres pratiques réunies au même endroit.", icon: Shapes },
+  { title: "Expertise locale", text: "Une connaissance des techniques et des conditions rencontrées dans notre secteur.", icon: Compass },
+  { title: "Magasin de proximité", text: "Voir le matériel, comparer, échanger et repartir avec des conseils directement applicables.", icon: MapPinned },
+];
+
+export default function Home() { return <>
+  <section className="relative min-h-[calc(100svh-5rem)] overflow-hidden bg-forest-950 text-white"><Image src="/images/hero-loire.png" alt="Pêcheur au bord de la Loire au lever du jour" fill priority sizes="100vw" className="object-cover object-[64%_center]"/><div className="absolute inset-0 bg-gradient-to-r from-forest-950 via-forest-950/70 to-transparent"/><div className="absolute inset-0 bg-gradient-to-t from-forest-950/70 via-transparent to-transparent"/><div className="container-site relative z-10 flex min-h-[calc(100svh-5rem)] flex-col items-start justify-center py-20"><div className="max-w-3xl"><p className="eyebrow">Magasin indépendant • Balbigny (Loire)</p><h1 className="display-title mt-5 text-5xl sm:text-6xl lg:text-8xl">Votre spécialiste pêche à Balbigny</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-forest-100 md:text-xl">Un magasin de proximité où vous pouvez voir le matériel, échanger sur votre pratique et bénéficier de conseils adaptés aux conditions locales.</p><div className="mt-9"><ButtonLink href="/magasin">Découvrir le magasin</ButtonLink></div></div><HeroLocationMapCard/></div></section>
+
+  <section className="section-pad bg-white"><div className="container-site grid items-center gap-12 lg:grid-cols-2"><div className="relative min-h-[500px] overflow-hidden rounded-[2rem]"><Image src="/images/store-interior.png" alt="Intérieur chaleureux d’un magasin de pêche" fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover"/><span className="absolute bottom-5 left-5 rounded-full bg-cream/90 px-4 py-2 text-xs font-bold text-forest-900 backdrop-blur">Photo d’ambiance à remplacer</span></div><div><SectionHeading eyebrow="Loire Pêche 42" title="La passion de la pêche, le conseil en plus" copy="Loire Pêche 42 est un magasin spécialisé où les pêcheurs viennent chercher du matériel, mais surtout un échange et des conseils adaptés à leur pratique."/><p className="mt-5 leading-7 text-stone-600">Notre rôle : vous aider à faire des choix cohérents, que vous débutiez ou que vous connaissiez déjà parfaitement vos coins de pêche. Proximité, accompagnement, choix et connaissance du terrain guident chaque échange.</p><div className="mt-8 flex items-center gap-4 rounded-2xl bg-forest-50 p-5"><span className="grid size-12 shrink-0 place-items-center rounded-full bg-forest-800 text-white"><HeartHandshake/></span><p className="font-display text-lg font-semibold text-forest-950">Une relation de confiance avant une logique de vente.</p></div><ButtonLink href="/magasin" className="mt-8">En savoir plus sur le magasin</ButtonLink></div></div></section>
+
+  <section className="section-pad"><div className="container-site"><SectionHeading eyebrow="Toutes les pratiques" title="Nos univers de pêche" copy="Découvrez les techniques couvertes au magasin et venez échanger avec l’équipe pour préparer votre prochaine sortie."/><div className="mt-12"><CategoryGrid/></div></div></section>
+
+  <section className="section-pad bg-forest-900 text-white"><div className="container-site"><p className="eyebrow">L’expérience en magasin</p><h2 className="display-title mt-4 max-w-3xl text-4xl md:text-5xl">Pourquoi venir chez Loire Pêche 42 ?</h2><div className="mt-12 grid gap-px overflow-hidden rounded-3xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">{reasons.map(({title,text,icon:Icon}) => <article key={title} className="bg-forest-900 p-7"><span className="grid size-12 place-items-center rounded-full bg-white/10 text-ember"><Icon/></span><h3 className="mt-6 font-display text-2xl font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-forest-200">{text}</p></article>)}</div></div></section>
+
+  <section className="section-pad bg-white"><div className="container-site"><SectionHeading eyebrow="Sur place" title="Le magasin en images" copy="Une première immersion dans l’univers de Loire Pêche 42. Ces visuels cohérents sont conçus pour être remplacés facilement par les futures photos du magasin et de l’équipe."/><div className="mt-12 grid auto-rows-[220px] gap-4 sm:grid-cols-2 lg:grid-cols-12"><GalleryImage src="/images/store-interior.png" alt="Intérieur du magasin" label="Le magasin" className="sm:row-span-2 lg:col-span-7"/><GalleryImage src="/images/tackle-flatlay.png" alt="Matériel de pêche" label="Le matériel" className="lg:col-span-5"/><GalleryImage src="/images/universe-accessoires.png" alt="Équipement au bord de l’eau" label="La préparation" className="lg:col-span-5"/><GalleryImage src="/images/universe-carnassier.png" alt="Pêcheur au bord de la rivière" label="Notre environnement" className="sm:col-span-2 lg:col-span-12 lg:min-h-[320px]"/></div></div></section>
+
+  <section className="section-pad"><div className="container-site"><SectionHeading eyebrow="Nos marques" title="Des références reconnues, disponibles en magasin" align="center" copy="Retrouvez en magasin une sélection de marques reconnues dans l’univers de la pêche."/><div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{brands.map(brand => <div key={brand} className="grid min-h-28 place-items-center rounded-2xl border border-forest-900/10 bg-white px-4 text-center font-display text-xl font-bold text-forest-900 transition hover:border-ember/50 hover:text-ember">{brand}</div>)}</div><div className="mt-8 text-center"><ButtonLink href="/marques" variant="secondary">Voir les marques</ButtonLink></div></div></section>
+
+  <section className="section-pad bg-forest-50"><div className="container-site"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><SectionHeading eyebrow="La vie du magasin" title="Les dernières actualités du magasin" copy="Arrivages, conseils, événements et informations pratiques à retrouver dans notre journal."/><ButtonLink href="/actualites" variant="secondary">Toutes les actualités</ButtonLink></div><div className="mt-12 grid gap-5 md:grid-cols-3">{news.slice(0,3).map(item => <NewsCard key={item.slug} item={item}/>)}</div></div></section>
+
+  <GoogleReviewsSection/>
+
+  <FinalCta/>
+</>; }
+
+function GalleryImage({ src, alt, label, className }: { src: string; alt: string; label: string; className: string }) { return <figure className={`group relative overflow-hidden rounded-3xl ${className}`}><Image src={src} alt={alt} fill sizes="(max-width:768px) 100vw, 60vw" className="object-cover transition duration-700 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-forest-950/75 via-transparent to-transparent"/><figcaption className="absolute bottom-5 left-5 text-sm font-bold text-white">{label} <span className="ml-2 text-xs font-normal text-white/70">• visuel temporaire</span></figcaption></figure>; }
