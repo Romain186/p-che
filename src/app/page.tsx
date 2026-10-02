@@ -6,8 +6,11 @@ import { NewsCard } from "@/components/news-card";
 import { FinalCta } from "@/components/cta";
 import { GoogleReviewsSection } from "@/components/google-reviews-section";
 import { HeroLocationMapCard } from "@/components/hero-location-map-card";
-import { news } from "@/data/news";
 import { brands } from "@/data/brands";
+import { getLatestNews } from "@/lib/data/news";
+import { getDisplayedReviews } from "@/lib/data/reviews";
+
+export const revalidate = 300;
 
 const reasons = [
   { title: "Conseils personnalisés", text: "Une équipe capable d’orienter chaque pêcheur selon sa pratique, son niveau et ses objectifs.", icon: MessagesSquare },
@@ -16,7 +19,13 @@ const reasons = [
   { title: "Magasin de proximité", text: "Voir le matériel, comparer, échanger et repartir avec des conseils directement applicables.", icon: MapPinned },
 ];
 
-export default function Home() { return <>
+export default async function Home() {
+  const [news, reviews] = await Promise.all([
+    getLatestNews(3),
+    getDisplayedReviews(3),
+  ]);
+
+  return <>
   <section className="relative min-h-[calc(100svh-5rem)] overflow-hidden bg-forest-950 text-white"><Image src="/images/hero-loire.png" alt="Pêcheur au bord de la Loire au lever du jour" fill priority sizes="100vw" className="object-cover object-[64%_center]"/><div className="absolute inset-0 bg-gradient-to-r from-forest-950 via-forest-950/70 to-transparent"/><div className="absolute inset-0 bg-gradient-to-t from-forest-950/70 via-transparent to-transparent"/><div className="container-site relative z-10 flex min-h-[calc(100svh-5rem)] flex-col items-start justify-center py-20"><div className="max-w-3xl"><p className="eyebrow">Magasin indépendant • Balbigny (Loire)</p><h1 className="display-title mt-5 text-5xl sm:text-6xl lg:text-8xl">Votre spécialiste pêche à Balbigny</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-forest-100 md:text-xl">Un magasin de proximité où vous pouvez voir le matériel, échanger sur votre pratique et bénéficier de conseils adaptés aux conditions locales.</p><div className="mt-9"><ButtonLink href="/magasin">Découvrir le magasin</ButtonLink></div></div><HeroLocationMapCard/></div></section>
 
   <section className="section-pad bg-white"><div className="container-site grid items-center gap-12 lg:grid-cols-2"><div className="relative min-h-[500px] overflow-hidden rounded-[2rem]"><Image src="/images/store-interior.png" alt="Intérieur chaleureux d’un magasin de pêche" fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover"/><span className="absolute bottom-5 left-5 rounded-full bg-cream/90 px-4 py-2 text-xs font-bold text-forest-900 backdrop-blur">Photo d’ambiance à remplacer</span></div><div><SectionHeading eyebrow="Loire Pêche 42" title="La passion de la pêche, le conseil en plus" copy="Loire Pêche 42 est un magasin spécialisé où les pêcheurs viennent chercher du matériel, mais surtout un échange et des conseils adaptés à leur pratique."/><p className="mt-5 leading-7 text-stone-600">Notre rôle : vous aider à faire des choix cohérents, que vous débutiez ou que vous connaissiez déjà parfaitement vos coins de pêche. Proximité, accompagnement, choix et connaissance du terrain guident chaque échange.</p><div className="mt-8 flex items-center gap-4 rounded-2xl bg-forest-50 p-5"><span className="grid size-12 shrink-0 place-items-center rounded-full bg-forest-800 text-white"><HeartHandshake/></span><p className="font-display text-lg font-semibold text-forest-950">Une relation de confiance avant une logique de vente.</p></div><ButtonLink href="/magasin" className="mt-8">En savoir plus sur le magasin</ButtonLink></div></div></section>
@@ -29,9 +38,9 @@ export default function Home() { return <>
 
   <section className="section-pad"><div className="container-site"><SectionHeading eyebrow="Nos marques" title="Des références reconnues, disponibles en magasin" align="center" copy="Retrouvez en magasin une sélection de marques reconnues dans l’univers de la pêche."/><div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{brands.map(brand => <div key={brand} className="grid min-h-28 place-items-center rounded-2xl border border-forest-900/10 bg-white px-4 text-center font-display text-xl font-bold text-forest-900 transition hover:border-ember/50 hover:text-ember">{brand}</div>)}</div><div className="mt-8 text-center"><ButtonLink href="/marques" variant="secondary">Voir les marques</ButtonLink></div></div></section>
 
-  <section className="section-pad bg-forest-50"><div className="container-site"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><SectionHeading eyebrow="La vie du magasin" title="Les dernières actualités du magasin" copy="Arrivages, conseils, événements et informations pratiques à retrouver dans notre journal."/><ButtonLink href="/actualites" variant="secondary">Toutes les actualités</ButtonLink></div><div className="mt-12 grid gap-5 md:grid-cols-3">{news.slice(0,3).map(item => <NewsCard key={item.slug} item={item}/>)}</div></div></section>
+  <section className="section-pad bg-forest-50"><div className="container-site"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><SectionHeading eyebrow="La vie du magasin" title="Les dernières actualités du magasin" copy="Arrivages, conseils, événements et informations pratiques à retrouver dans notre journal."/><ButtonLink href="/actualites" variant="secondary">Toutes les actualités</ButtonLink></div>{news.length > 0 ? <div className="mt-12 grid gap-5 md:grid-cols-3">{news.map(item => <NewsCard key={item.slug} item={item}/>)}</div> : <p className="mt-12 rounded-3xl bg-white p-8 text-center text-stone-600">Aucune actualité publiée pour le moment.</p>}</div></section>
 
-  <GoogleReviewsSection/>
+  <GoogleReviewsSection reviews={reviews} isPreview={reviews.some((review) => review.isMock)}/>
 
   <FinalCta/>
 </>; }

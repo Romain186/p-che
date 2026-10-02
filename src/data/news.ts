@@ -8,6 +8,7 @@ export type NewsItem = {
   image: string;
   position?: string;
   facebookUrl?: string;
+  isDevelopment?: boolean;
 };
 
 // Contenus fictifs de démonstration. Ils seront remplacés par les publications Facebook du magasin.

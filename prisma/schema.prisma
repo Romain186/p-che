@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum NewsPostStatus {
+  DRAFT
+  PUBLISHED
+  HIDDEN
+  ARCHIVED
+}
+
+enum NewsPostSource {
+  MANUAL
+  FACEBOOK
+}
+
+model NewsPost {
+  id           String           @id @default(cuid())
+  slug         String           @unique
+  title        String
+  content      String           @db.Text
+  excerpt      String           @db.Text
+  mainImageUrl String?
+  media        Json?
+  source       NewsPostSource   @default(MANUAL)
+  status       NewsPostStatus   @default(DRAFT)
+  externalId   String?          @unique
+  externalUrl  String?
+  publishedAt  DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([source])
+}
+
+model GoogleReview {
+  id               String   @id @default(cuid())
+  externalId       String   @unique
+  authorName       String
+  authorPhotoUrl   String?
+  authorProfileUrl String?
+  rating           Int
+  text             String   @db.Text
+  relativeDate     String?
+  visitDate        DateTime?
+  googleMapsUrl    String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([rating, visitDate])
+}

@@ -63,6 +63,6 @@ export const reviewPlaceholders: GoogleReview[] = [
   },
 ];
 
-export function getDisplayedReviews(reviews: GoogleReview[]) {
+export function filterDisplayedReviews(reviews: GoogleReview[]) {
   return reviews.filter((review) => review.rating >= 4);
 }

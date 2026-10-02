@@ -1,6 +1,6 @@
 import { ArrowRight, MapPin } from "lucide-react";
 import { GoogleReviewCard, StarRating } from "@/components/google-review-card";
-import { getDisplayedReviews, googleReviewSummary, googleReviewsPreview, reviewPlaceholders, type GoogleReview, type GoogleReviewSummary } from "@/data/reviews";
+import { filterDisplayedReviews, googleReviewSummary, googleReviewsPreview, reviewPlaceholders, type GoogleReview, type GoogleReviewSummary } from "@/data/reviews";
 import { store } from "@/data/store";
 
 type GoogleReviewsSectionProps = {
@@ -10,7 +10,7 @@ type GoogleReviewsSectionProps = {
 };
 
 export function GoogleReviewsSection({ reviews = reviewPlaceholders, summary = googleReviewSummary, isPreview = googleReviewsPreview.isMock }: GoogleReviewsSectionProps) {
-  const displayedReviews = getDisplayedReviews(reviews).slice(0, 3);
+  const displayedReviews = filterDisplayedReviews(reviews).slice(0, 3);
 
   return (
     <section id="avis-google" className="section-pad scroll-mt-20 bg-white">
@@ -40,9 +40,13 @@ export function GoogleReviewsSection({ reviews = reviewPlaceholders, summary = g
           <span>Sélection d’avis Google notés 4★ et 5★</span>
         </div>
 
-        <div className="mt-5 grid w-full auto-cols-[calc(100%-1.5rem)] grid-flow-col gap-4 overflow-x-auto pb-5 [scrollbar-width:none] snap-x snap-mandatory sm:auto-cols-[calc(50%-0.5rem)] lg:grid-flow-row lg:grid-cols-3 lg:overflow-visible">
-          {displayedReviews.map((review) => <GoogleReviewCard key={review.id} review={review}/>) }
-        </div>
+        {displayedReviews.length > 0 ? (
+          <div className="mt-5 grid w-full auto-cols-[calc(100%-1.5rem)] grid-flow-col gap-4 overflow-x-auto pb-5 [scrollbar-width:none] snap-x snap-mandatory sm:auto-cols-[calc(50%-0.5rem)] lg:grid-flow-row lg:grid-cols-3 lg:overflow-visible">
+            {displayedReviews.map((review) => <GoogleReviewCard key={review.id} review={review}/>) }
+          </div>
+        ) : (
+          <p className="mt-5 rounded-3xl bg-forest-50 p-8 text-center text-stone-600">Aucun avis à afficher pour le moment.</p>
+        )}
 
         <div className="mt-7 flex flex-col items-start justify-between gap-5 border-t border-forest-900/10 pt-7 sm:flex-row sm:items-center">
           <p className="flex items-center gap-2 text-sm text-stone-600"><MapPin size={17} className="shrink-0 text-ember"/> Les avis complets restent consultables sur Google.</p>
